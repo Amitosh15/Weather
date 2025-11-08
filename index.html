@@ -13,19 +13,34 @@
 </head>
 
 <body>
-    <header>
+    <header class="border border-gray-600 flex justify-around h-9">
         <h1>Weather</h1>
-        <input type="search" name="search" id="search" placeholder="Search City" class="border border-black-700">
-        <button class="cursor-pointer"><i class="fa-solid fa-magnifying-glass"></i></button>
-        <button type="submit" class="border border-gray-600 py-1 px-2 rounded-2xl cursor-pointer"><i
-                class="fa-solid fa-location-crosshairs"></i>
-            Current
-            location</button>
+        <div class="weather-input">
+            <input type="search" name="search" id="search" placeholder="Search City"
+                class="border border-black-700 rounded-xl text-center">
+            <button class="cursor-pointer"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <button type="submit" class="border border-gray-600 py-1 px-2 rounded-2xl cursor-pointer ml-8"><i
+                    class="fa-solid fa-location-crosshairs"></i>
+                Current
+                location</button>
+        </div>
 
     </header>
     <main>
-        <section class="weather-update"></section>
-        <section class="weather-forecast"></section>
+        <section class="weather-update">
+            <div class="temperature"></div>
+            <ul>
+                <li>Air quality</li>
+                <li>Wind</li>
+                <li>Humidity</li>
+                <li>Visibility</li>
+            </ul>
+        </section>
+        <section class="weather-forecast">
+            <h2>7 Days forecast</h2>
+            <div class="forecast-card">
+            </div>
+        </section>
     </main>
     <script src="script.js"></script>
 </body>
