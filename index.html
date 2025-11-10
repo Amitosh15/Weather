@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <header class="border border-gray-600 flex justify-around h-9">
+    <header class="border border-gray-600 flex justify-around h-16 mb-12">
         <h1>Weather</h1>
         <div class="weather-input">
             <input type="search" name="search" id="search" placeholder="Search City"
@@ -27,20 +27,35 @@
 
     </header>
     <main>
-        <section class="weather-update">
-            <div class="temperature"></div>
-            <ul>
+        <section class="weather-card flex flex-col py-3 px-4 gap-8 border border-gray-600">
+            <div class="weather-details flex gap-18">
+                <div class="current-weather border border-red-600">
+                    <div class="weather-icon">
+                        <img src="" alt="">
+                    </div>
+                    <div class="details">
+                        <p>Current weather</p>
+                        <h2>___&deg;C</h2>
+                        <p>_____</p>
+                    </div>
+                </div>
+                <div class="date border border-red-600">
+                    <p>Date</p>
+                    <p>City</p>
+                </div>
+            </div>
+            <ul class="flex gap-16 border border-red-600">
                 <li>Air quality</li>
                 <li>Wind</li>
                 <li>Humidity</li>
                 <li>Visibility</li>
             </ul>
         </section>
-        <section class="weather-forecast">
+        <!-- <section class="weather-forecast">
             <h2>7 Days forecast</h2>
             <div class="forecast-card">
             </div>
-        </section>
+        </section> -->
     </main>
     <script src="script.js"></script>
 </body>
