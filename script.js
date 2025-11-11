@@ -1,12 +1,30 @@
-// import "dotenv/config";
+import config from "./config.js";
 
 let cityInput = document.getElementById("city-input");
 let searchBtn = document.getElementById("search-btn");
 let currentWeather = document.querySelector(".weather-details");
-const apiKey = import.meta.env.WEATHER_API_KEY;
+let fiveDaysForecastCard = document.querySelector(".day-forecast");
+const apiKey = config.WEATHER_API_KEY;
 
 function getWeather(lat, lon) {
   let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+  let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   fetch(weatherUrl)
     .then((res) => res.json())
@@ -19,23 +37,27 @@ function getWeather(lat, lon) {
       });
 
       currentWeather.innerHTML = `
-        <div class="current-weather">
-            <div class="weather-icon">
-                <img src="https://openweathermap.org/img/wn/${
-                  data.weather[0].icon
-                }@2x.png" alt="${data.weather[0].description}">
+        <div class="current-weather p-4">
+            <div class="weather-icon flex flex-col items-center mb-4">
+              <p>Current weather</p>
+              <img src="https://openweathermap.org/img/wn/${
+                data.weather[0].icon
+              }@2x.png" alt="${data.weather[0].description}">
             </div>
-            <div class="details">
-                <p>Current weather</p>
-                <h2>${(data.main.temp - 273.15).toFixed(2)}&deg;C</h2>
-                <p>${data.weather[0].description}</p>
+            <div class="details text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-2">${(
+                  data.main.temp - 273.15
+                ).toFixed(2)}&deg;C</h2>
+                <p class="text-gray-600 capitalize">${
+                  data.weather[0].description
+                }</p>
             </div>
         </div>
-        <div class="date border border-red-600">
-            <p><i class="fa-solid fa-calendar"></i>${currentDate}</p>
-            <p><i class="fa-solid fa-location-crosshairs"></i>${data.name}, ${
-        data.sys.country
-      }</p>
+        <div class="date">
+          <p class="flex items-center gap-2 text-gray-600 mb-2"><i class="fa-solid fa-calendar"></i>${currentDate}</p>
+          <p class="flex items-center gap-2 text-gray-600"><i class="fa-solid fa-location-crosshairs"></i>${
+            data.name
+          }, ${data.sys.country}</p>
         </div>
       `;
     });
