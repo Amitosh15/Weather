@@ -1,0 +1,13 @@
+header {
+    align-items: center;
+}
+
+/* .weather-card {
+    width: 500px;
+    margin: auto;
+} */
+
+.weather-card {
+    margin: auto;
+    width: 600px;
+}
