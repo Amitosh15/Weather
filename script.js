@@ -38,8 +38,8 @@ function getWeather(lat, lon) {
 
       currentWeather.innerHTML = `
         <div class="current-weather p-4">
+        <p>Current weather</p>
             <div class="weather-icon flex flex-col items-center mb-4">
-              <p>Current weather</p>
               <img src="https://openweathermap.org/img/wn/${
                 data.weather[0].icon
               }@2x.png" alt="${data.weather[0].description}">
@@ -60,6 +60,47 @@ function getWeather(lat, lon) {
           }, ${data.sys.country}</p>
         </div>
       `;
+    });
+
+  fetch(forecastUrl)
+    .then((res) => res.json())
+    .then((data) => {
+      let forecastDays = [];
+      let fiveDaysForecast = data.list.filter((forecast) => {
+        let forecastDate = new Date(forecast.dt_txt).getDate();
+
+        if (!forecastDays.includes(forecastDate)) {
+          forecastDays.push(forecastDate);
+          return true;
+        }
+        return false;
+      });
+
+      fiveDaysForecastCard.innerHTML = ``;
+
+      for (let i = 0; i < fiveDaysForecast.length && i < 5; i++) {
+        let date = new Date(fiveDaysForecast[i].dt_txt);
+        let temp = (fiveDaysForecast[i].main.temp - 273.15).toFixed(2);
+        let icon = fiveDaysForecast[i].weather[0].icon;
+        let description = fiveDaysForecast[i].weather[0].description;
+
+        fiveDaysForecastCard.innerHTML += `
+        <div class="forecast-card p-4 m-2 rounded-lg shadow-md bg-white text-center inline-block min-w-max">
+            <p class="text-sm text-gray-600 font-semibold mb-2">${
+              days[date.getDay()]
+            }</p>
+            <p class="text-xs text-gray-500 mb-2">${date.getDate()} ${
+          months[date.getMonth()]
+        }</p>
+            <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" class="mx-auto w-16 h-16 mb-2">
+            <p class="font-bold text-lg text-gray-800">${temp}&deg;C</p>
+            <p class="text-xs text-gray-600 capitalize">${description}</p>
+        </div>
+        `;
+      }
+    })
+    .catch((error) => {
+      console.log();
     });
 }
 
