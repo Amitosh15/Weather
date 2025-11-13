@@ -2,12 +2,18 @@ header {
     align-items: center;
 }
 
-/* .weather-card {
-    width: 500px;
-    margin: auto;
-} */
+.weather-card {
+    width: 600px;
+}
+
+.weather-forecast {
+    width: auto;
+}
 
 .weather-card {
-    margin: auto;
-    width: 600px;
+    width: auto;
+}
+
+.weather-head {
+    width: 100%;
 }

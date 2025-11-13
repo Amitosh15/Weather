@@ -17,48 +17,60 @@
 
 <body>
     <header class="border border-gray-600 flex justify-around h-16 mb-12">
-        <h1>Weather</h1>
+        <h1 class="font-bold text-2xl text-gray-600">Weather</h1>
         <div class="weather-input">
             <input type="search" name="search" id="city-input" placeholder="Search City"
-                class="border border-black-700 rounded-xl text-center">
-            <button class="cursor-pointer" id="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-            <button type="submit" class="border border-gray-600 py-1 px-2 rounded-2xl cursor-pointer ml-8"><i
+                class="border border-black-700 rounded-2xl text-center py-1">
+            <button class="cursor-pointer" id="search-btn"><i
+                    class="fa-solid fa-magnifying-glass text-[24px]"></i></button>
+            <button id="location-btn"
+                class="border border-gray-600 py-1 px-2 rounded-2xl cursor-pointer ml-8 text-gray-600"><i
                     class="fa-solid fa-location-crosshairs"></i>
                 Current
                 location</button>
         </div>
 
     </header>
-    <main>
-        <section class="weather-card flex flex-col py-3 px-4 gap-8 border border-gray-600">
-            <div class="weather-details flex gap-18">
-                <div class="current-weather border border-red-600">
-                    <p>Current weather</p>
-                    <div class="weather-icon">
-                        <img src="" alt="">
+    <main class="flex flex-col items-center gap-8">
+        <!-- Weather card -->
+        <section
+            class="weather-card flex flex-col justify-center items-center py-3 px-4 gap-8 border border-gray-600 rounded-2xl">
+            <div class="weather-details flex gap-12">
+                <div class="current-weather p-4">
+                    <p class="weather-head text-xl font-bold text-center text-gray-700 mb-6">Current weather</p>
+                    <div class="weather-data flex gap-12">
+                        <!-- icon -->
+                        <div class="weather-icon">
+                            <img src="" alt="png">
+                            <p class="text-gray-600 capitalize">_____</p>
+                        </div>
+                        <!-- details -->
+                        <div class="details text-center flex flex-col justify-center">
+                            <h2 class="text-4xl font-bold text-gray-700 mb-2">___&deg;C</h2>
+                        </div>
+                        <div class="date flex flex-col justify-center">
+                            <p class="flex items-center gap-2 text-gray-600 mb-2"><i
+                                    class="fa-solid fa-calendar"></i>____</p>
+                            <p class="flex items-center gap-2 text-gray-600"><i
+                                    class="fa-solid fa-location-crosshairs"></i>____
+                            </p>
+                        </div>
                     </div>
-                    <div class="details">
-                        <h2 class="text-4xl font-bold text-gray-800 mb-2">___&deg;C</h2>
-                        <p class="text-gray-600 capitalize">_____</p>
-                    </div>
-                </div>
-                <div class="date border border-red-600">
-                    <p class="flex items-center gap-2 text-gray-600"><i class="fa-solid fa-calendar"></i>____</p>
-                    <p class="flex items-center gap-2 text-gray-600"><i class="fa-solid fa-location-crosshairs"></i>____
-                    </p>
                 </div>
             </div>
         </section>
 
-        <section class="weather-forecast border text border-gray-600">
-            <h2>5 Days forecast</h2>
+        <!-- Forecast card -->
+        <section class="weather-forecast border text border-gray-600 rounded-2xl px-4 py-3">
+            <h2 class="font-bold text-center text-gray-700">5 Days forecast</h2>
             <div class="day-forecast">
-                <div class="forecast-item">
-                    <img src="" alt="">
-                    <span>___&deg;C</span>
+                <div class="forecast-card p-4 m-2 rounded-lg shadow-md bg-white text-center inline-block min-w-max">
+                    <p class="text-sm text-gray-600 font-semibold mb-2">__</p>
+                    <p class="text-xs text-gray-500 mb-2">__</p>
+                    <img src="" alt="png" class="mx-auto w-16 h-16 mb-2">
+                    <p class="font-bold text-lg text-gray-700">__&deg;C</p>
+                    <p class="text-xs text-gray-700 capitalize">__</p>
                 </div>
-                <p>____</p>
-                <p>____</p>
             </div>
         </section>
     </main>
