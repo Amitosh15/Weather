@@ -35,9 +35,9 @@
         <!-- Weather card -->
         <section
             class="weather-card flex flex-col justify-center items-center py-3 px-4 gap-8 border border-gray-600 rounded-2xl">
-            <div class="weather-details flex gap-12">
-                <div class="current-weather p-4">
-                    <p class="weather-head text-xl font-bold text-center text-gray-700 mb-6">Current weather</p>
+            <div class="weather-details">
+                <div class="current-weather p-4 flex flex-col gap-6">
+                    <p class="weather-head text-xl font-bold text-center text-gray-700">Current weather</p>
                     <div class="weather-data flex gap-12">
                         <!-- icon -->
                         <div class="weather-icon">
@@ -54,6 +54,20 @@
                             <p class="flex items-center gap-2 text-gray-600"><i
                                     class="fa-solid fa-location-crosshairs"></i>____
                             </p>
+                        </div>
+                    </div>
+                    <div class="weather-highlights flex justify-center gap-6">
+                        <div class="humidity">
+                            <p>Humidity</p>
+                            <h2 id="humidityVal">___%</h2>
+                        </div>
+                        <div class="wind">
+                            <p>Wind Speed</p>
+                            <h2 id="windVal">___m/s</h2>
+                        </div>
+                        <div class="visibility">
+                            <p>Visibility</p>
+                            <h2 id="visibilityVal">___km</h2>
                         </div>
                     </div>
                 </div>
