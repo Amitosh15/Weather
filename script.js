@@ -4,9 +4,10 @@ const cityInput = document.getElementById("city-input");
 const searchBtn = document.getElementById("search-btn");
 const currentWeather = document.querySelector(".weather-details");
 const fiveDaysForecastCard = document.querySelector(".day-forecast");
+const locationBtn = document.getElementById("location-btn");
 const apiKey = config.WEATHER_API_KEY;
 
-function getWeather(lat, lon) {
+function getWeather(lat, lon, name, country) {
   let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
@@ -62,7 +63,6 @@ function getWeather(lat, lon) {
           </div>
           </div>
         </div>
-        
       `;
     });
 
@@ -104,7 +104,7 @@ function getWeather(lat, lon) {
       }
     })
     .catch((error) => {
-      console.log();
+      console.log(error);
     });
 }
 
@@ -122,8 +122,8 @@ function getCity() {
       if (data.length === 0) {
         return alert(`No result found for "${cityName}"`);
       }
-      const { lat, lon } = data[0];
-      getWeather(lat, lon);
+      const { lat, lon, name, country, state } = data[0];
+      getWeather(lat, lon, name, country, state);
     })
     .catch((error) => console.error("Error fetching location:", error));
 }
@@ -133,3 +133,56 @@ searchBtn.addEventListener("click", getCity);
 cityInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") getCity();
 });
+
+async function getLocation() {
+  if (!navigator.geolocation) {
+    alert("Geolocation is not support by your browser.");
+  }
+
+  locationBtn.disable = true;
+  // locationBtn.innerHTML =
+  //   '<i class="fa-solid fa-spinner fa-spin"></i> Locating...';
+
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      try {
+        const revUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
+        const res = await fetch(revUrl);
+        const data = await res.json();
+        let name = "Current Location";
+        let country, state;
+
+        if (Array.isArray(data) && data.length > 0) {
+          name = data[0].name || name;
+          country = data[0].country;
+          state = data[0].state;
+        }
+
+        getWeather(lat, lon, name, country, state);
+      } catch (error) {
+        getWeather("Current Location", lat, lon);
+      } finally {
+        locationBtn.disable = false;
+        location.innerHTML =
+          '<i class="fa-solid fa-location-crosshairs"></i> Current Location';
+      }
+    },
+    (err) => {
+      locationBtn.disable = false;
+      location.innerHTML =
+        '<i class="fa-solid fa-location-crosshairs"></i> Current Location';
+
+      if (err.code === err.PERMISSION_DENIED) {
+        alert("Location permision denied.");
+      } else {
+        alert("Unable to retrive your location.");
+      }
+    },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+locationBtn.addEventListener("click", getLocation);
