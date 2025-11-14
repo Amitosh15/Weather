@@ -16,3 +16,11 @@ Weather Project
 **Open in browser**
 
 - Simply open `index.html` in your web browser
+
+# Technology Used
+
+- **HTML5**: Sementic markup
+- **CSS3**: Styling with Tailwind CSS
+- **JavaScript**: API calling and DOM manipulation
+- **Font Awesome**: Icon library
+- **OpeanWeatherMap API**: Weather data source
