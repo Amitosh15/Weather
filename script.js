@@ -38,32 +38,62 @@ function getWeather(lat, lon, name, country) {
       });
 
       currentWeather.innerHTML = `
-        <div class="current-weather p-4">
-          <p class="text-2xl font-bold text-center mb-6 text-gray-600">Current weather</p>
+        <div class="current-weather p-4 flex flex-col gap-6">
+          <p class="text-2xl font-bold text-center text-gray-700">Current weather</p>
           <div class="weather-data flex gap-8">
             <div class="weather-icon flex flex-col items-center mb-4">
-            <img src="https://openweathermap.org/img/wn/${
-              data.weather[0].icon
-            }@2x.png" alt="${data.weather[0].description}">
-            <p class="text-gray-600 font-xl capitalize">${
-              data.weather[0].description
-            }</p>
+              <img src="https://openweathermap.org/img/wn/${
+                data.weather[0].icon
+              }@2x.png" alt="${data.weather[0].description}">
+              <p class="text-gray-600 font-xl capitalize">${
+                data.weather[0].description
+              }</p>
+            </div>
+            <div class="details text-center flex flex-col justify-center">
+              <h2 class="text-4xl font-bold text-gray-800 mb-2">${(
+                data.main.temp - 273.15
+              ).toFixed(2)}&deg;C</h2>
+            </div>
+            <div class="date flex flex-col justify-center">
+              <p class="flex items-center gap-2 text-gray-600 mb-2"><i class="fa-solid fa-calendar"></i>${currentDate}</p>
+              <p class="flex items-center gap-2 text-gray-600"><i class="fa-solid fa-location-crosshairs"></i>${
+                data.name
+              }, ${data.sys.country}</p>
+            </div>
           </div>
-          <div class="details text-center flex flex-col justify-center">
-            <h2 class="text-4xl font-bold text-gray-800 mb-2">${(
-              data.main.temp - 273.15
-            ).toFixed(2)}&deg;C</h2>
-                
-          </div>
-          <div class="date flex flex-col justify-center">
-            <p class="flex items-center gap-2 text-gray-600 mb-2"><i class="fa-solid fa-calendar"></i>${currentDate}</p>
-            <p class="flex items-center gap-2 text-gray-600"><i class="fa-solid fa-location-crosshairs"></i>${
-              data.name
-            }, ${data.sys.country}</p>
-          </div>
+          <div class="weather-highlights flex justify-center gap-12">
+            <div class="humidity text-center">
+                <p class="mb-2">Humidity</p>
+                <h2 id="humidityVal">___%</h2>
+              </div>
+              <div class="wind text-center">
+                <p class="mb-2">Wind Speed</p>
+                <h2 id="windVal">___m/s</h2>
+              </div>
+              <div class="visibility text-center">
+                <p class="mb-2">Visibility</p>
+                <h2 id="visibilityVal">___km</h2>
+              </div>
           </div>
         </div>
       `;
+
+      const humidityE1 = document.getElementById("humidityVal");
+      if (humidityE1 && data.main && data.main.humidity !== undefined) {
+        humidityE1.innerHTML = `<i class="fa-solid fa-droplet"></i> ${data.main.humidity} %`;
+      }
+
+      const windE1 = document.getElementById("windVal");
+      if (windE1 && data.wind && data.wind.speed !== undefined) {
+        windE1.innerHTML = `<i class="fa-solid fa-wind"></i> ${data.wind.speed} m/s`;
+      }
+
+      const visibilityE1 = document.getElementById("visibilityVal");
+      if (visibilityE1 && data.visibility !== undefined) {
+        visibilityE1.innerHTML = `<i class="fa-solid fa-eye"></i> ${(
+          data.visibility / 1000
+        ).toFixed(2)} km`;
+      }
     });
 
   fetch(forecastUrl)
