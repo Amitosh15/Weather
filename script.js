@@ -7,6 +7,12 @@ const fiveDaysForecastCard = document.querySelector(".day-forecast");
 const locationBtn = document.getElementById("location-btn");
 const apiKey = config.WEATHER_API_KEY;
 
+const maxRecentSearches = 5;
+const recentSearches = JSON.parse(
+  localStorage.getItem("recentSearches") || "[]"
+);
+const recentSearchesDropdown = document.getElementById("recent-searches");
+
 function getWeather(lat, lon, name, country) {
   let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
@@ -152,7 +158,17 @@ function getCity() {
       if (data.length === 0) {
         return alert(`No result found for "${cityName}"`);
       }
-      const { lat, lon, name, country, state } = data[0];
+      let { lat, lon, name, country, state } = data[0];
+
+      if (!recentSearches.includes(cityName)) {
+        recentSearches.unshift(cityName);
+        if (recentSearches.length > maxRecentSearches) {
+          recentSearches.pop();
+        }
+        localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+        updateRecentSearches();
+      }
+
       getWeather(lat, lon, name, country, state);
     })
     .catch((error) => console.error("Error fetching location:", error));
@@ -169,9 +185,7 @@ async function getLocation() {
     alert("Geolocation is not support by your browser.");
   }
 
-  locationBtn.disable = true;
-  // locationBtn.innerHTML =
-  //   '<i class="fa-solid fa-spinner fa-spin"></i> Locating...';
+  locationBtn.disabled = true;
 
   navigator.geolocation.getCurrentPosition(
     async (position) => {
@@ -196,7 +210,7 @@ async function getLocation() {
         getWeather("Current Location", lat, lon);
       } finally {
         locationBtn.disable = false;
-        location.innerHTML =
+        locationBtn.innerHTML =
           '<i class="fa-solid fa-location-crosshairs"></i> Current Location';
       }
     },
@@ -216,3 +230,48 @@ async function getLocation() {
 }
 
 locationBtn.addEventListener("click", getLocation);
+
+function updateRecentSearches() {
+  if (recentSearches.length === 0) {
+    recentSearchesDropdown.classList.add("hidden");
+    return;
+  }
+
+  recentSearchesDropdown.innerHTML = recentSearches
+    .map((city) => `<div class="recent-item" data-city="${city}">${city}</div>`)
+    .join("");
+
+  document.querySelectorAll(".recent-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      const city = item.getAttribute("data-city");
+      handleRecentSearch(city);
+    });
+  });
+
+  recentSearchesDropdown.classList.remove("hidden");
+}
+
+// Handle clicking a recent search
+function handleRecentSearch(cityName) {
+  cityInput.value = cityName;
+  getCity();
+  recentSearchesDropdown.classList.add("hidden");
+}
+
+// Show dropdown only when clicking the input box
+cityInput.addEventListener("click", () => {
+  if (recentSearches.length > 0) {
+    updateRecentSearches();
+    recentSearchesDropdown.classList.remove("hidden");
+  }
+});
+
+// Hide dropdown when clicking outside
+document.addEventListener("click", (e) => {
+  if (
+    !cityInput.contains(e.target) &&
+    !recentSearchesDropdown.contains(e.target)
+  ) {
+    recentSearchesDropdown.classList.add("hidden");
+  }
+});
