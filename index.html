@@ -16,26 +16,28 @@
 </head>
 
 <body>
-    <header class="border border-gray-600 flex justify-around h-16 mb-12">
-        <h1 class="font-bold text-2xl text-gray-600">Weather</h1>
+    <nav class="border border-gray-600 flex justify-around items-center h-20">
+        <h1 class="font-bold text-3xl text-gray-600">Weather</h1>
         <div class="weather-input flex flex-row items-center">
             <div class="search-container">
-                <input type="search" name="search" id="city-input" placeholder="Search City"
-                    class="border border-black-700 rounded-2xl text-center py-1">
-                <div id="recent-searches" class="recent-dropdown">
+                <!-- Input Search -->
+                <input name="search" id="city-input" placeholder="Search City"
+                    class="border border-black-700 rounded-3xl text-center py-2 px-2">
+                <div id="recent-searches"
+                    class="recent-dropdown hidden absolute top-[100%] left-0 w-[100%] bg-white border border-[#ccc] rounded-lg max-h-[200px]">
                 </div>
             </div>
-            <button class="cursor-pointer" id="search-btn"></button><i
-                class="fa-solid fa-magnifying-glass text-[24px]"></i>
+            <button class="search-btn cursor-pointer ml-2 p-2 rounded-3xl" id="search-btn"><i
+                    class="fa-solid fa-magnifying-glass text-xl"></i></button>
             <button id="location-btn"
-                class="border border-gray-600 py-1 px-2 rounded-2xl cursor-pointer ml-8 text-gray-600"><i
+                class="border border-gray-600 py-2 px-2 rounded-3xl cursor-pointer ml-8 text-gray-600"><i
                     class="fa-solid fa-location-crosshairs"></i>
                 Current
                 location</button>
         </div>
 
-    </header>
-    <main class="flex flex-col items-center gap-8">
+    </nav>
+    <main class="flex flex-col items-center gap-8 my-6">
         <!-- Weather card -->
         <section
             class="weather-card flex flex-col justify-center items-center py-3 px-4 gap-8 border border-gray-600 rounded-2xl">
@@ -88,6 +90,7 @@
                     <img src="" alt="png" class="mx-auto w-16 h-16 mb-2">
                     <p class="font-bold text-lg text-gray-700">__&deg;C</p>
                     <p class="text-xs text-gray-700 capitalize">__</p>
+                    <p class="text-xs text-gray-600"><i class="fa-solid fa-wind"></i>__</p>
                 </div>
             </div>
         </section>
