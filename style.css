@@ -17,3 +17,27 @@ header {
 .weather-head {
     width: 100%;
 }
+
+/* Recent search */
+
+.search-container {
+    position: relative;
+}
+
+.recent-dropdown {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+.recent-item {
+    transition: background-color 0.2s;
+}
+
+.recent-item:hover {
+    background-color: #f0f0f0;
+}
+
+.search-btn {
+    background-color: crimson;
+}
