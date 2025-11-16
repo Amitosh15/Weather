@@ -123,18 +123,27 @@ function getWeather(lat, lon, name, country) {
         let temp = (fiveDaysForecast[i].main.temp - 273.15).toFixed(2);
         let icon = fiveDaysForecast[i].weather[0].icon;
         let description = fiveDaysForecast[i].weather[0].description;
+        let windSpeed =
+          fiveDaysForecast[i].wind && fiveDaysForecast[i].wind.speed != null
+            ? fiveDaysForecast[i].wind.speed
+            : null;
 
         fiveDaysForecastCard.innerHTML += `
-        <div class="forecast-card p-4 m-2 rounded-lg shadow-md bg-white text-center inline-block min-w-max">
+        <div class="forecast-card p-4 m-2 rounded-lg shadow-md bg-white text-center inline-block min-w-max ">
+          <div class="flex flex-col gap-2">
             <p class="text-sm text-gray-600 font-semibold mb-2">${
               days[date.getDay()]
             }</p>
-            <p class="text-xs text-gray-500 mb-2">${date.getDate()} ${
+            <p class="text-xs text-gray-500 mb-2"><i class="fa-solid fa-calendar"></i>${date.getDate()} ${
           months[date.getMonth()]
         }</p>
             <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" class="mx-auto w-16 h-16 mb-2">
             <p class="font-bold text-lg text-gray-800">${temp}&deg;C</p>
             <p class="text-xs text-gray-600 capitalize">${description}</p>
+            <p class="text-xs text-gray-600"><i class="fa-solid fa-wind"></i> ${
+              windSpeed !== null ? windSpeed + " m/s" : "N/A"
+            }</p>
+          </div>
         </div>
         `;
       }
@@ -238,7 +247,10 @@ function updateRecentSearches() {
   }
 
   recentSearchesDropdown.innerHTML = recentSearches
-    .map((city) => `<div class="recent-item" data-city="${city}">${city}</div>`)
+    .map(
+      (city) =>
+        `<div class="recent-item py-2 px-3 cursor-pointer" data-city="${city}">${city}</div>`
+    )
     .join("");
 
   document.querySelectorAll(".recent-item").forEach((item) => {
