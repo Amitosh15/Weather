@@ -83,6 +83,36 @@ function getWeather(lat, lon, name, country) {
           </div>
         </div>
       `;
+      // Change background according to weather
+      let weatherMain = data.weather[0].main;
+      let weatherBg = weatherMain.toLowerCase();
+
+      // Haze
+      // Smoke
+      // Mist
+      // Scattered clouds
+      // document.body.style.backgroundImage = "url('/assets/clear-sky-sun.jpg')";
+
+      if (weatherBg.includes("clear")) {
+        // document.body.backgroundImage = "";
+        document.body.style.backgroundImage = "url('/assets/clear-sky.jpg')";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "bottom";
+      } else if (weatherBg.includes("cloud")) {
+        document.body.backgroundImage = "";
+        document.body.style.backgroundColor = "url('/assets/cloud.jpg')";
+      } else if (weatherBg.includes("rain")) {
+        document.body.backgroundImage = "";
+        document.body.style.backgroundColor = "url('/assets/rainy-sky.jpg')";
+      } else if (weatherBg.includes("snow")) {
+        document.body.backgroundImage = "";
+        document.body.style.backgroundColor = "lightgray";
+      } else if (weatherBg.includes("thunderstorm")) {
+        document.body.backgroundImage = "";
+        document.body.style.backgroundColor = "url('/assets/storm.jpg')";
+      } else {
+        console.log("Err");
+      }
 
       const humidityE1 = document.getElementById("humidityVal");
       if (humidityE1 && data.main && data.main.humidity !== undefined) {
@@ -129,18 +159,18 @@ function getWeather(lat, lon, name, country) {
             : null;
 
         fiveDaysForecastCard.innerHTML += `
-        <div class="forecast-card p-4 m-2 rounded-lg shadow-md bg-white text-center inline-block min-w-max ">
+        <div class="forecast-card p-4 m-2 rounded-lg shadow-md text-center inline-block min-w-max ">
           <div class="flex flex-col gap-2">
-            <p class="text-sm text-gray-600 font-semibold mb-2">${
+            <p class="text-sm text-white font-semibold mb-2">${
               days[date.getDay()]
             }</p>
-            <p class="text-xs text-gray-500 mb-2"><i class="fa-solid fa-calendar"></i>${date.getDate()} ${
+            <p class="text-xs text-white mb-2"><i class="fa-solid fa-calendar"></i>${date.getDate()} ${
           months[date.getMonth()]
         }</p>
             <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" class="mx-auto w-16 h-16 mb-2">
-            <p class="font-bold text-lg text-gray-800">${temp}&deg;C</p>
-            <p class="text-xs text-gray-600 capitalize">${description}</p>
-            <p class="text-xs text-gray-600"><i class="fa-solid fa-wind"></i> ${
+            <p class="font-bold text-lg text-white">${temp}&deg;C</p>
+            <p class="text-xs text-white capitalize">${description}</p>
+            <p class="text-xs text-white"><i class="fa-solid fa-wind"></i> ${
               windSpeed !== null ? windSpeed + " m/s" : "N/A"
             }</p>
           </div>
@@ -157,7 +187,7 @@ function getWeather(lat, lon, name, country) {
 function getCity() {
   let cityName = cityInput.value.trim();
 
-  if (!cityName) return alert("Please enter city name");
+  if (!cityName) return showCustomAlert("Please enter city name", "error");
 
   const geocodingUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${apiKey}`;
 
@@ -165,7 +195,7 @@ function getCity() {
     .then((res) => res.json())
     .then((data) => {
       if (data.length === 0) {
-        return alert(`No result found for "${cityName}"`);
+        return showCustomAlert(`No result found for "${cityName}"`);
       }
       let { lat, lon, name, country, state } = data[0];
 
@@ -180,7 +210,10 @@ function getCity() {
 
       getWeather(lat, lon, name, country, state);
     })
-    .catch((error) => console.error("Error fetching location:", error));
+    .catch((error) => {
+      console.error("Error fetching location:", error);
+      showCustomAlert("Unable to find city. Please try again.", "error");
+    });
 }
 
 // Eventlistener
@@ -225,13 +258,13 @@ async function getLocation() {
     },
     (err) => {
       locationBtn.disable = false;
-      location.innerHTML =
+      locationBtn.innerHTML =
         '<i class="fa-solid fa-location-crosshairs"></i> Current Location';
 
       if (err.code === err.PERMISSION_DENIED) {
-        alert("Location permision denied.");
+        showCustomAlert("Location permision denied.");
       } else {
-        alert("Unable to retrive your location.");
+        showCustomAlert("Unable to retrive your location.", "error");
       }
     },
     { enableHighAccuracy: true, timeout: 10000 }
@@ -249,7 +282,7 @@ function updateRecentSearches() {
   recentSearchesDropdown.innerHTML = recentSearches
     .map(
       (city) =>
-        `<div class="recent-item py-2 px-3 cursor-pointer" data-city="${city}">${city}</div>`
+        `<div class="recent-item hover:bg-gray-500 py-2 px-3 cursor-pointer" data-city="${city}">${city}</div>`
     )
     .join("");
 
@@ -287,3 +320,38 @@ document.addEventListener("click", (e) => {
     recentSearchesDropdown.classList.add("hidden");
   }
 });
+
+// Custom Alert
+function showCustomAlert(message, type = "info") {
+  const alertHTML = `
+  <div id="custom-alert-modal" class="fixed inset-0 flex items-center justify-center z-50">
+      <div class="alert-details bg-white rounded-lg shadow-lg p-6 w-85">
+        <div class="flex items-center gap-3 mb-4">
+          ${
+            type === "error"
+              ? '<i class="fa-solid fa-circle-xmark text-red-500 text-2xl"></i>'
+              : type === "success"
+              ? '<i class="fa-solid fa-circle-check text-green-500 text-2xl"></i>'
+              : '<i class="fa-solid fa-circle-info text-blue-500 text-2xl"></i>'
+          }
+          <h2 class="text-xl font-bold text-gray-800">${
+            type === "error" ? "Error" : type === "success" ? "Success" : "Info"
+          }</h2>
+        </div>
+        <p class="text-gray-600 mb-6">${message}</p>
+        <button id="alert-close-btn" class="w-[80px] bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition">
+          OK
+        </button>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", alertHTML);
+
+  const closeBtn = document.getElementById("alert-close-btn");
+  const modal = document.getElementById("custom-alert-modal");
+
+  closeBtn.addEventListener("click", () => {
+    modal.remove();
+  });
+}
