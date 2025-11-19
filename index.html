@@ -15,49 +15,50 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body>
-    <nav class="border border-gray-600 flex justify-around items-center h-20">
-        <h1 class="font-bold text-3xl text-gray-600">Weather</h1>
+<body class="min-h-screen">
+    <nav class="border border-gray-600 flex justify-around items-center h-20 backdrop-blur-3xl mb-4">
+        <h1 class="font-bold text-3xl text-white">Weather</h1>
         <div class="weather-input flex flex-row items-center">
             <div class="search-container">
                 <!-- Input Search -->
                 <input name="search" id="city-input" placeholder="Search City"
-                    class="border border-black-700 rounded-3xl text-center py-2 px-2">
+                    class="border border-white rounded-3xl text-center text-white py-2 px-2">
+                <!-- Dropdown -->
                 <div id="recent-searches"
-                    class="recent-dropdown hidden absolute top-[100%] left-0 w-[100%] bg-white border border-[#ccc] rounded-lg max-h-[200px]">
+                    class="recent-dropdown hidden absolute top-[100%] left-0 w-[100%] border border-[#ccc] rounded-lg max-h-[200px] bg-slate-300">
                 </div>
             </div>
             <button class="search-btn cursor-pointer ml-2 p-2 rounded-3xl" id="search-btn"><i
-                    class="fa-solid fa-magnifying-glass text-xl"></i></button>
+                    class="fa-solid fa-magnifying-glass text-xl text-white"></i></button>
             <button id="location-btn"
-                class="border border-gray-600 py-2 px-2 rounded-3xl cursor-pointer ml-8 text-gray-600"><i
+                class="border border-white py-2 px-2 rounded-3xl cursor-pointer ml-8 text-white"><i
                     class="fa-solid fa-location-crosshairs"></i>
                 Current
                 location</button>
         </div>
-
     </nav>
+
     <main class="flex flex-col items-center gap-8 my-6">
         <!-- Weather card -->
         <section
-            class="weather-card flex flex-col justify-center items-center py-3 px-4 gap-8 border border-gray-600 rounded-2xl">
+            class="weather-card flex flex-col justify-center items-center py-3 px-4 gap-8 border border-gray-600 rounded-2xl backdrop-blur-lg text-white mt-6">
             <div class="weather-details">
                 <div class="current-weather p-4 flex flex-col gap-6">
-                    <p class="weather-head text-xl font-bold text-center text-gray-700">Current weather</p>
+                    <p class="weather-head text-xl font-bold text-center text-white">Current weather</p>
                     <div class="weather-data flex gap-12">
                         <!-- icon -->
                         <div class="weather-icon">
                             <img src="" alt="png">
-                            <p class="text-gray-600 capitalize">_____</p>
+                            <p class="text-white capitalize">_____</p>
                         </div>
                         <!-- details -->
                         <div class="details text-center flex flex-col justify-center">
-                            <h2 class="text-4xl font-bold text-gray-700 mb-2">___&deg;C</h2>
+                            <h2 class="text-4xl font-bold text-white mb-2">___&deg;C</h2>
                         </div>
                         <div class="date flex flex-col justify-center">
-                            <p class="flex items-center gap-2 text-gray-600 mb-2"><i
-                                    class="fa-solid fa-calendar"></i>____</p>
-                            <p class="flex items-center gap-2 text-gray-600"><i
+                            <p class="flex items-center gap-2 text-white mb-2"><i class="fa-solid fa-calendar"></i>____
+                            </p>
+                            <p class="flex items-center gap-2 text-white"><i
                                     class="fa-solid fa-location-crosshairs"></i>____
                             </p>
                         </div>
@@ -81,16 +82,17 @@
         </section>
 
         <!-- Forecast card -->
-        <section class="weather-forecast border text border-gray-600 rounded-2xl px-4 py-3">
-            <h2 class="font-bold text-center text-gray-700">5 Days forecast</h2>
+        <section class="weather-forecast mb-4">
+            <h2 class="font-bold text-center text-white">5 Days forecast</h2>
             <div class="day-forecast">
-                <div class="forecast-card p-4 m-2 rounded-lg shadow-md bg-white text-center inline-block min-w-max">
-                    <p class="text-sm text-gray-600 font-semibold mb-2">__</p>
-                    <p class="text-xs text-gray-500 mb-2">__</p>
+                <div
+                    class="forecast-card p-4 m-2 rounded-lg shadow-md text-center inline-block min-w-max border border-gray-600 backdrop-blur-3xl">
+                    <p class="text-sm text-white font-semibold mb-2">__</p>
+                    <p class="text-xs text-white mb-2">__</p>
                     <img src="" alt="png" class="mx-auto w-16 h-16 mb-2">
-                    <p class="font-bold text-lg text-gray-700">__&deg;C</p>
-                    <p class="text-xs text-gray-700 capitalize">__</p>
-                    <p class="text-xs text-gray-600"><i class="fa-solid fa-wind"></i>__</p>
+                    <p class="font-bold text-lg text-white">__&deg;C</p>
+                    <p class="text-xs text-white capitalize">__</p>
+                    <p class="text-xs text-white"><i class="fa-solid fa-wind"></i>__</p>
                 </div>
             </div>
         </section>
