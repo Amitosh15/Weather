@@ -60,6 +60,7 @@ main {
 
 .recent-item {
     transition: background-color 0.2s;
+    padding-left: 12px;
 }
 
 .search-btn {
@@ -190,5 +191,55 @@ main {
 
     .search-btn {
         right: 35px;
+    }
+}
+
+.weather-card {
+    animation: slideToRight 1s ease-out 1;
+}
+
+@keyframes slideToRight {
+    from {
+        transform: translateX(-90%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+
+    }
+}
+
+.weather-forecast {
+    animation: slideToLeft 1s ease-out
+}
+
+@keyframes slideToLeft {
+    from {
+        transform: translateX(90%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+
+    }
+}
+
+nav {
+    animation: navTopSlide 1s ease-out
+}
+
+@keyframes navTopSlide {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
