@@ -1,3 +1,4 @@
+// Importing API from config.js
 import config from "./config.js";
 
 const cityInput = document.getElementById("city-input");
@@ -13,7 +14,8 @@ const recentSearches = JSON.parse(
 );
 const recentSearchesDropdown = document.getElementById("recent-searches");
 
-function getWeather(lat, lon, name, country) {
+// It contains current weather and forecast
+function getWeather(lat, lon) {
   let weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`;
   let forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
 
@@ -33,36 +35,36 @@ function getWeather(lat, lon, name, country) {
   ];
   const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
+  // Fetching weather
   fetch(weatherUrl)
     .then((res) => res.json())
     .then((data) => {
-      // get current date
+      // It get current date
       const currentDate = new Date().toLocaleDateString("en-US", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
       });
 
+      // HTML structure with design
       currentWeather.innerHTML = `
-        <div class="current-weather p-4 flex flex-col gap-6">
-          <p class="text-2xl font-bold text-center text-gray-700">Current weather</p>
-          <div class="weather-data flex gap-8">
+        <div class="current-weather py-2 px-2 flex flex-col gap-6">
+          <p class="text-2xl font-bold text-center text-white">Current weather</p>
+          <div class="weather-data flex justify-center items-center gap-8">
             <div class="weather-icon flex flex-col items-center mb-4">
               <img src="https://openweathermap.org/img/wn/${
                 data.weather[0].icon
               }@2x.png" alt="${data.weather[0].description}">
-              <p class="text-gray-600 font-xl capitalize">${
+              <h2 class="temp text-4xl font-bold text-white mb-2">${(
+                data.main.temp - 273.15
+              ).toFixed(2)}&deg;C</h2>
+              <p class="text-white font-xl capitalize">${
                 data.weather[0].description
               }</p>
             </div>
-            <div class="details text-center flex flex-col justify-center">
-              <h2 class="text-4xl font-bold text-gray-800 mb-2">${(
-                data.main.temp - 273.15
-              ).toFixed(2)}&deg;C</h2>
-            </div>
             <div class="date flex flex-col justify-center">
-              <p class="flex items-center gap-2 text-gray-600 mb-2"><i class="fa-solid fa-calendar"></i>${currentDate}</p>
-              <p class="flex items-center gap-2 text-gray-600"><i class="fa-solid fa-location-crosshairs"></i>${
+              <p class="flex items-center gap-2 text-white mb-2"><i class="fa-solid fa-calendar"></i>${currentDate}</p>
+              <p class="flex items-center gap-2 text-white"><i class="fa-solid fa-location-crosshairs"></i>${
                 data.name
               }, ${data.sys.country}</p>
             </div>
@@ -83,50 +85,48 @@ function getWeather(lat, lon, name, country) {
           </div>
         </div>
       `;
-      // Change background according to weather
+
+      // Change background according to weather condition
+      // In this i'm getting weather based on main and converting that to lowercase
       let weatherMain = data.weather[0].main;
       let weatherBg = weatherMain.toLowerCase();
 
-      // Haze
-      // Smoke
-      // Mist
-      // Scattered clouds
-      // document.body.style.backgroundImage = "url('/assets/clear-sky-sun.jpg')";
-
       if (weatherBg.includes("clear")) {
-        // document.body.backgroundImage = "";
         document.body.style.backgroundImage = "url('/assets/clear-sky.jpg')";
         document.body.style.backgroundSize = "cover";
         document.body.style.backgroundPosition = "bottom";
-      } else if (weatherBg.includes("cloud")) {
+      } else if (weatherBg.includes("clouds")) {
         document.body.backgroundImage = "";
-        document.body.style.backgroundColor = "url('/assets/cloud.jpg')";
-      } else if (weatherBg.includes("rain")) {
+        document.body.style.backgroundImage = "url('/assets/clouds.jpg')";
+      } else if (weatherBg.includes("rain") || weatherBg.includes("drizzle")) {
         document.body.backgroundImage = "";
-        document.body.style.backgroundColor = "url('/assets/rainy-sky.jpg')";
+        document.body.style.backgroundImage = "url('/assets/rainy-sky.jpg')";
       } else if (weatherBg.includes("snow")) {
         document.body.backgroundImage = "";
-        document.body.style.backgroundColor = "lightgray";
+        document.body.style.backgroundImage = "url(/assets/snow.jpg)";
       } else if (weatherBg.includes("thunderstorm")) {
         document.body.backgroundImage = "";
-        document.body.style.backgroundColor = "url('/assets/storm.jpg')";
+        document.body.style.backgroundImage = "url('/assets/storm.jpg')";
+      } else if (weatherBg.includes("mist") || weatherBg.includes("haze")) {
+        document.body.backgroundImage = "";
+        document.body.style.backgroundImage = "url(/assets/mist.jpg)";
       } else {
         console.log("Err");
       }
 
-      const humidityE1 = document.getElementById("humidityVal");
-      if (humidityE1 && data.main && data.main.humidity !== undefined) {
-        humidityE1.innerHTML = `<i class="fa-solid fa-droplet"></i> ${data.main.humidity} %`;
+      const humidityVal = document.getElementById("humidityVal");
+      if (humidityVal && data.main && data.main.humidity !== undefined) {
+        humidityVal.innerHTML = `<i class="fa-solid fa-droplet"></i> ${data.main.humidity} %`;
       }
 
-      const windE1 = document.getElementById("windVal");
-      if (windE1 && data.wind && data.wind.speed !== undefined) {
-        windE1.innerHTML = `<i class="fa-solid fa-wind"></i> ${data.wind.speed} m/s`;
+      const windVal = document.getElementById("windVal");
+      if (windVal && data.wind && data.wind.speed !== undefined) {
+        windVal.innerHTML = `<i class="fa-solid fa-wind"></i> ${data.wind.speed} m/s`;
       }
 
-      const visibilityE1 = document.getElementById("visibilityVal");
-      if (visibilityE1 && data.visibility !== undefined) {
-        visibilityE1.innerHTML = `<i class="fa-solid fa-eye"></i> ${(
+      const visibilityVal = document.getElementById("visibilityVal");
+      if (visibilityVal && data.visibility !== undefined) {
+        visibilityVal.innerHTML = `<i class="fa-solid fa-eye"></i> ${(
           data.visibility / 1000
         ).toFixed(2)} km`;
       }
@@ -159,7 +159,7 @@ function getWeather(lat, lon, name, country) {
             : null;
 
         fiveDaysForecastCard.innerHTML += `
-        <div class="forecast-card p-4 m-2 rounded-lg shadow-md text-center inline-block min-w-max ">
+        <div class="forecast-card p-4 m-2 rounded-lg shadow-md text-center inline-block min-w-max">
           <div class="flex flex-col gap-2">
             <p class="text-sm text-white font-semibold mb-2">${
               days[date.getDay()]
@@ -200,7 +200,10 @@ function getCity() {
       let { lat, lon, name, country, state } = data[0];
 
       if (!recentSearches.includes(cityName)) {
+        // Add city in array
         recentSearches.unshift(cityName);
+
+        // Remove last city if greater than 5
         if (recentSearches.length > maxRecentSearches) {
           recentSearches.pop();
         }
@@ -211,7 +214,6 @@ function getCity() {
       getWeather(lat, lon, name, country, state);
     })
     .catch((error) => {
-      console.error("Error fetching location:", error);
       showCustomAlert("Unable to find city. Please try again.", "error");
     });
 }
@@ -222,9 +224,10 @@ cityInput.addEventListener("keypress", (e) => {
   if (e.key === "Enter") getCity();
 });
 
+// Current location
 async function getLocation() {
   if (!navigator.geolocation) {
-    alert("Geolocation is not support by your browser.");
+    showCustomAlert("Geolocation is not support by your browser.");
   }
 
   locationBtn.disabled = true;
@@ -235,8 +238,8 @@ async function getLocation() {
       const lon = position.coords.longitude;
 
       try {
-        const revUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
-        const res = await fetch(revUrl);
+        const locationUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${apiKey}`;
+        const res = await fetch(locationUrl);
         const data = await res.json();
         let name = "Current Location";
         let country, state;
@@ -253,13 +256,12 @@ async function getLocation() {
       } finally {
         locationBtn.disable = false;
         locationBtn.innerHTML =
-          '<i class="fa-solid fa-location-crosshairs"></i> Current Location';
+          '<i class="fa-solid fa-location-crosshairs"></i>';
       }
     },
     (err) => {
       locationBtn.disable = false;
-      locationBtn.innerHTML =
-        '<i class="fa-solid fa-location-crosshairs"></i> Current Location';
+      locationBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i>';
 
       if (err.code === err.PERMISSION_DENIED) {
         showCustomAlert("Location permision denied.");
@@ -273,6 +275,7 @@ async function getLocation() {
 
 locationBtn.addEventListener("click", getLocation);
 
+// Recent searches
 function updateRecentSearches() {
   if (recentSearches.length === 0) {
     recentSearchesDropdown.classList.add("hidden");
@@ -282,7 +285,7 @@ function updateRecentSearches() {
   recentSearchesDropdown.innerHTML = recentSearches
     .map(
       (city) =>
-        `<div class="recent-item hover:bg-gray-500 py-2 px-3 cursor-pointer" data-city="${city}">${city}</div>`
+        `<div class="recent-item hover:bg-gray-500 py-2 px-1 cursor-pointer" data-city="${city}">${city}</div>`
     )
     .join("");
 
@@ -323,6 +326,7 @@ document.addEventListener("click", (e) => {
 
 // Custom Alert
 function showCustomAlert(message, type = "info") {
+  // HTML modal
   const alertHTML = `
   <div id="custom-alert-modal" class="fixed inset-0 flex items-center justify-center z-50">
       <div class="alert-details bg-white rounded-lg shadow-lg p-6 w-85">
