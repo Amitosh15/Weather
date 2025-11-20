@@ -213,7 +213,7 @@ function getCity() {
 
       getWeather(lat, lon, name, country, state);
     })
-    .catch((error) => {
+    .catch(() => {
       showCustomAlert("Unable to find city. Please try again.", "error");
     });
 }
